@@ -1,33 +1,34 @@
-import java.io.FileWriter;
+package main;
 import java.util.ArrayList;
 import java.util.Scanner;
+class Main {
+   public static Scanner scanner;
+   static {
+       scanner = new Scanner(System.in);
+   }
 
-public class Main {
+
+
+
     public static void main(String[] args) throws Exception {
-        Scanner scanner = new Scanner(System.in);
-        ArrayList<NamePhome> people = new ArrayList<NamePhome>();
-        System.out.println("Здравствуйте вас приветсвует блокнот имен");
+
+
+        ArrayList<NamePhone> people = new ArrayList<NamePhone>();
+        System.out.println("Здравствуйте вас приветсвует блокнот клиентов");
         while (true) {
-            System.out.println("Выберите функцию \nДобавить\nЧитать\nУдалить\nCохранить\nИзменить\nВыйти");
-            String option = scanner.nextLine();
-            switch (option) {
-                case ("Добавить"):
-                    addPerson(people);
-                    break;
-                case ("Читать"):
-                    for (NamePhome person : people) {
-                        System.out.println(person.toString());
-                    }
-                    break;
-                case ("Удалить"):
-                    System.out.println("Напиши имя что бы удалить его из списка");
-                    for (NamePhome person : people) {
-                        System.out.println(person);
-                    }
-                    String rName = scanner.nextLine();
-                    people.remove(rName);
-                    break;
-              /*  case ("Изменить"):
+            System.out.println("Выберите функцию \nдобавить\nчитать\nудалить\nсохранить\nизменить\nвыйти");
+            try {
+                switch (scanner.nextLine()) {
+                    case ("добавить"):
+                        addPersons(people);
+                        break;
+                    case ("читать"):
+                        showPersons(people);
+                        break;
+                    case ("удалить"):
+                        removePerson(people);
+                        break;
+              /* case ("Изменить"):
                     System.out.println("Укажите ячейку для замены");
                     int i = scanner.nextInt();
                     System.out.println("Укажите на что изменить");
@@ -37,39 +38,117 @@ public class Main {
                     people.add(i, );
                     break;
 
+               case ("Сохранить"):
+                    SaveInfo(people);
+                    break;
 
-                case ("Сохранить"):
-                    for (NamePhome person : people) {
-                        FileWriter fileWriter = new FileWriter("filename.txt", true);
-                        fileWriter.write(person);
-                        fileWriter.append('\n');
-                        fileWriter.flush();
 
-                    }
+               */
 
-                */
-                case ("Выйти"):
-                    return;
+                    case ("выйти"):
+                        return;
+
+                }
+            }catch (Exception ex){
+                System.out.println(ex);
+
             }
 
         }
     }
-    public static void addPerson (ArrayList<NamePhome> persons){
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Сколько имен добавить в лист?");
-        int b = scanner.nextInt();
-        System.out.println("Ваши имена");
-        for (int i = 0; i <= b; i++) {
-            String name = scanner.nextLine();
-            String phone = scanner.nextLine();
+    /* public static void SaveInfo (ArrayList<NamePhome>persons) throws IOException {
+
+        for (NamePhome person : people) {
+            FileWriter fileWriter = new FileWriter("SafeTest.txt", true);
             NamePhome namePhone = new NamePhome();
-            namePhone.setPhome(phone);
-            namePhone.setName(name);
-            persons.add(namePhone);
+            fileWriter.write(namePhone.getName());
+            fileWriter.append('\n');
+            fileWriter.flush();
         }
         return;
     }
-}
+
+     */
+    public static void addPersons (ArrayList<NamePhone> persons) {
+
+
+        System.out.println("Вы точно хотите добавить контакт-Да/Нет");
+        while (true) {
+
+            switch (scanner.nextLine()) {
+                case ("Да"):
+                    try {
+                        System.out.println("Сколько клиентов добавить в список?");
+                        int b = scanner.nextInt();
+                        System.out.println("Контакты");
+                        scanner.nextLine();
+                        for (int i = 0; i < b; i++) {
+                            System.out.println(i + 1 + ")" + " Имя клиента:");
+                            String name = scanner.nextLine();
+                            System.out.println(i + 1 + ")" + " Телефон клиента:");
+                            String phone = scanner.nextLine();
+                            NamePhone namePhone = new NamePhone(name,phone);
+                            persons.add(namePhone);
+
+                        }
+                    } catch (Exception e1) {
+                        e1.getMessage();
+                        System.out.println("Попробуй снова!!!!");
+                    }
+                    System.out.println("Контакты добавлены!");
+                    System.out.println("Повторить ? Да/Нет");
+                    break;
+                case ("Нет"):
+                    return;
+            }
+        }
+    }
+
+    public static void removePerson  (ArrayList<NamePhone> people) {
+
+        while (true) {
+            showPersons(people);
+            System.out.print("Напиши номер строки: ");
+            int b = scanner.nextInt() - 1;
+            System.out.print("Точно хотите удалить? Y/N");
+            scanner.nextLine();
+            switch (scanner.nextLine()) {
+                case ("Y"):
+                    try {
+                        people.remove(b);
+                        b = b + 1;
+                        System.out.println("Строка" + "#"+ b + " удалена!");
+                        System.out.println("Желаете повторить? Y/N " );
+                        switch (scanner.nextLine()){
+                            case ("N"):
+                                return;
+                        }
+                    } catch (Exception e2) {
+                        System.out.println("Укажите цифру больше 0");
+                    }
+                    break;
+                case ("N"):
+                    return;
+
+
+            }
+        }
+    }
+    public static void showPersons (ArrayList<NamePhone>people){ // метод для просмотра данных (есть небольшая проблема хочу что бы выставлялась цифра перед каждой строкой:
+        for (NamePhone person : people) {
+                System.out.println(person);
+        }
+        return;
+    }
+
+    public class Storage  implements Cloneable {
+
+
+
+
+        }
+    }
+
 
 
 
